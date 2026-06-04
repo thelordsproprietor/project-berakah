@@ -44,8 +44,8 @@ Ring 1 MVP scope. Each maps to exactly one roadmap phase (traceability table at 
 
 ### Configuration & Operations
 
-- [ ] **CONFIG-01**: All configuration is a single frozen Pydantic Settings object (`BerakahConfig`) loaded once at CLI entry; `frozen=True, extra="forbid"`; no `os.getenv` scattered through the code
-- [ ] **CONFIG-02**: `import-linter` contracts enforce module-boundary rules (strategy modules cannot import `data`/`vault`/`backtest`; reverse edges across the DAG are forbidden); CI-blocking
+- [x] **CONFIG-01**: All configuration is a single frozen Pydantic Settings object (`BerakahConfig`) loaded once at CLI entry; `frozen=True, extra="forbid"`; no `os.getenv` scattered through the code
+- [x] **CONFIG-02**: `import-linter` contracts enforce module-boundary rules (strategy modules cannot import `data`/`vault`/`backtest`; reverse edges across the DAG are forbidden); CI-blocking
 - [x] **CONFIG-03**: `uv sync --frozen` enforces lockfile compliance in CI; `pyright --strict` + `ruff` run on every commit
 
 ### CLI
@@ -121,8 +121,8 @@ Mapping from REQ-ID → phase. The roadmapper will finalize phase numbering; pha
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | HYP-02 | Phase 1 (Typed Foundation) | Pending |
-| CONFIG-01 | Phase 1 | Pending |
-| CONFIG-02 | Phase 1 | Pending |
+| CONFIG-01 | Phase 1 | Complete |
+| CONFIG-02 | Phase 1 | Complete |
 | CONFIG-03 | Phase 1 | Complete |
 | DATA-01 | Phase 2 (Data Layer) | Pending |
 | DATA-02 | Phase 2 | Pending |

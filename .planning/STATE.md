@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_plan: 2
+current_plan: 3
 status: executing
-stopped_at: "Completed 01-01-PLAN.md (3 task commits: e6a5db2, 7273d63, 273171c)"
-last_updated: "2026-06-04T23:03:56.149Z"
-last_activity: 2026-06-05
+stopped_at: "Completed 01-03-PLAN.md (CONFIG-01 + CONFIG-02 realized; 2 task commits: 2d1cfa8, 3656928)"
+last_updated: "2026-06-04T23:21:33.811Z"
+last_activity: 2026-06-04
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State: Berakah Ring 1
@@ -39,11 +39,11 @@ progress:
 ## Current Position
 
 **Phase:** 01 (typed-foundation-look-ahead-contract)
-Current Plan: 2
+Current Plan: 3
 Total Plans in Phase: 3
-Plan: 2 of 3 in current phase
+Plan: 3 of 3
 **Status:** Ready to execute
-**Last activity:** 2026-06-05
+**Last activity:** 2026-06-04
 
 **Progress (current phase, by plan):**
 
@@ -83,6 +83,7 @@ Plan: 2 of 3 in current phase
 | Phase | Plan | Duration | Tasks | Files | Completed |
 |---|---|---|---|---|---|
 | 01 | 01 (toolchain-bootstrap) | ~15 min | 3 | 14 (13 created, 1 modified) | 2026-06-04 |
+| Phase 01 P03 | ~11min | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,11 @@ Plan: 2 of 3 in current phase
 - **Tier-1 exchanges only.** Binance, Coinbase, Kraken. Documented wash-trade contamination on smaller venues is unacceptable.
 - **Macro-defined frozen regime labels.** No HMM-derived regime detection in Ring 1; labels are a TOML file, never an algorithm.
 - **Vault as typed I/O.** `berakah_KB/` is a sibling directory of `berakah/`, version-controlled in the same repo, written-to only via the 5-function `berakah.vault.api`.
+- [Phase 01]: (Plan 01-03) pydantic-settings v2 silently accepts unknown env vars under extra='forbid' — closed via model_validator(mode='before') reading os.environ once at construction time; this is the only direct env-var read in the codebase
+- [Phase 01]: (Plan 01-03) Permanently staged 6 empty __init__.py placeholders for berakah/{data,strategy,backtest,validation,vault,cli}/ — required to activate import-linter forbidden-edge contracts from Phase 1 (import-linter 2.6 hard-errors if source_modules references a non-existent module); these are infrastructure-not-edge per Pitfall 23, similar to berakah/py.typed
+- [Phase 01]: (Plan 01-03) types-purity contract commented out pending Plan 01-02 landing berakah/types/__init__.py — Plan 02's SUMMARY should enable it. Literal contract name remains in importlinter.cfg (in a comment) for traceability test.
+- [Phase 01]: (Plan 01-03) Fixed .gitignore: changed data/ and artifacts/ (unanchored) to /data/ and /artifacts/ (repo-root-anchored) — unanchored form was matching berakah/data/ and berakah/artifacts/ source packages and silently hiding them from version control
+- [Phase 01]: (Plan 01-03) cfg.annualization_factor = sqrt(105_120) is the single source of truth for the crypto Sharpe constant — Pitfall 11 prevention. Phase 4 must import from BerakahConfig, not define a separate module-level constant.
 
 ### Decisions logged during execution
 
@@ -129,7 +135,7 @@ Plan: 2 of 3 in current phase
 
 **Last session ended:** 2026-06-05 (Plan 01-01 completed)
 **Resume point:** Begin Wave 2 — execute Plan 01-02 and Plan 01-03 in parallel.
-**Stopped at:** Completed 01-01-PLAN.md (3 task commits: e6a5db2, 7273d63, 273171c)
+**Stopped at:** Completed 01-03-PLAN.md (CONFIG-01 + CONFIG-02 realized; 2 task commits: 2d1cfa8, 3656928)
 
 **Pre-flight check before starting Phase 1 Wave 2:**
 
