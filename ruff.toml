@@ -11,6 +11,7 @@ extend-exclude = [
   "data",
   "artifacts",
   "berakah_KB",
+  "tests/typecheck",
 ]
 
 [lint]
@@ -33,6 +34,12 @@ ignore = [
 
 [lint.per-file-ignores]
 "tests/**/*.py" = ["PLR2004", "S101"]  # asserts and magic numbers ok in tests
+# TYPE_CHECKING blocks in these test modules repeat `from X import Y` per symbol so each
+# line carries its own `# pyright: ignore` for reportMissingImports/reportUnusedImport.
+# Ruff/isort wants to merge them; we deliberately keep them split per Plan 01-02 checker
+# Issue 4. I001 + the noqa-on-each-line is the LOCKED RED-phase discipline.
+"tests/unit/types/*.py" = ["I001"]
+"tests/property/*.py" = ["I001"]
 
 [format]
 quote-style = "double"

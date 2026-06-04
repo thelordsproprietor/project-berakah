@@ -1,6 +1,6 @@
 {
   "include": ["berakah", "tests"],
-  "exclude": [".venv", "**/__pycache__", "data", "artifacts", "berakah_KB"],
+  "exclude": [".venv", "**/__pycache__", "data", "artifacts", "berakah_KB", "tests/typecheck"],
   "venvPath": ".",
   "venv": ".venv",
   "pythonVersion": "3.12",
