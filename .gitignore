@@ -1,0 +1,8 @@
+# Obsidian per-user UI/window state (Obsidian recommends ignoring)
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
+**/.obsidian/cache/
+
+# OS junk
+.DS_Store
+Thumbs.db
