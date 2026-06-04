@@ -14,7 +14,7 @@ Berakah is an AI-augmented systematic trading research engine fused with a Karpa
 
 <!-- Shipped and confirmed valuable. -->
 
-(None yet — ship to validate)
+- ✓ **HYP-02**: Strategy modules expose a compile-time-verifiable contract such that look-ahead bias is unrepresentable in the type system — *Validated in Phase 1: Typed Foundation. `BarSnapshot[NowTs]` PEP 695 Generic + `parse()` predicate; 3-level proof (pyright subprocess + runtime `FutureBarLeakageError` + 200-example hypothesis adversarial test).*
 
 ### Active
 
@@ -23,7 +23,6 @@ Berakah is an AI-augmented systematic trading research engine fused with a Karpa
 - [ ] **DATA-01**: Engine ingests historical BTC/ETH OHLCV from Tier-1 exchanges (Binance, Coinbase, Kraken) at ≥5-minute resolution and stores it in a queryable analytical format
 - [ ] **DATA-02**: Engine annotates the data record with regime labels for the four named regimes (Bull 2020–21, Bear 2022, Recovery 2023, ETF era 2024–)
 - [ ] **HYP-01**: Operator can author a mean-reversion hypothesis as a vault Markdown note that links to an executable strategy module in code
-- [ ] **HYP-02**: Strategy modules expose a compile-time-verifiable contract such that look-ahead bias (reading future bars from a current `now_ts`) is unrepresentable in the type system
 - [ ] **BT-01**: Engine runs a backtest of any strategy module against the historical record with vol-targeted position sizing and explicit handling of fees
 - [ ] **BT-02**: Backtest output includes regime-stratified Sharpe, drawdown, win rate, and trade-by-trade ledger, written to disk as parquet/JSON
 - [ ] **VAL-01**: Engine performs explicit out-of-sample validation: in-sample / out-of-sample splits enforced by the engine, never picked post-hoc
@@ -83,6 +82,8 @@ Berakah is an AI-augmented systematic trading research engine fused with a Karpa
 | "Edge proven" bar: OOS Sharpe ≥ 1.0 (rolling 3-month) AND non-negative regime-stratified Sharpe across all 4 labeled regimes | Time-based stop trigger needs an unambiguous, math-grounded definition. This combination prevents both overfit-by-luck and regime-fragile strategies. | — Pending |
 | Project kill trigger: 6 calendar months without crossing the bar above | Time-based, not P&L-based. Fires on signal absence, not on variance. Prevents the failure mode where the operator chases marginal improvements indefinitely. | — Pending |
 | Start truly clean — no restoration of the discarded `c6237f7` planning history | User pivoted the project conception. The discarded artifacts framed Berakah as a more execution-heavy system; the new framing centers the vault and the research loop. | — Pending |
+| Phantom-types library replaced with PEP 695 Generic + `parse()` predicate for `BarSnapshot[NowTs]` | STACK.md's `phantom-types==3.0.2` choice was incompatible with `polars.DataFrame`'s Rust-backed `__init__` (phantom-types requires multiple-inheritance with the wrapped type). ARCHITECTURE.md §2.1's concrete sketch was the source of truth; the PEP 695 implementation delivers the identical semantic guarantee (proven at all 3 layers: pyright subprocess + runtime + hypothesis 200-example adversarial). | ✓ Good — proven in Phase 1 |
+| Single source of truth for crypto Sharpe annualization: `BerakahConfig.annualization_factor = math.sqrt(105_120)` | Pitfall 11 prevention: inheriting `sqrt(252)` from copy-pasted tutorials silently distorts every Sharpe by ~2.1×. Define once, import everywhere. | ✓ Good — landed in Phase 1 |
 
 ## Evolution
 
@@ -102,4 +103,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-04 after initialization*
+*Last updated: 2026-06-05 after Phase 1 (Typed Foundation + Look-Ahead Contract) completion*
