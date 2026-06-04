@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_plan: 3
-status: executing
-stopped_at: "Completed 01-03-PLAN.md (CONFIG-01 + CONFIG-02 realized; 2 task commits: 2d1cfa8, 3656928)"
-last_updated: "2026-06-04T23:21:33.811Z"
+status: verifying
+stopped_at: "Completed 01-02-PLAN.md (2 task commits: c356ae5, 743ff1a). HYP-02 realized at compile-time + runtime + adversarial."
+last_updated: "2026-06-04T23:23:41.539Z"
 last_activity: 2026-06-04
 progress:
   total_phases: 6
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State: Berakah Ring 1
@@ -42,27 +42,27 @@ progress:
 Current Plan: 3
 Total Plans in Phase: 3
 Plan: 3 of 3
-**Status:** Ready to execute
+**Status:** Phase complete — ready for verification
 **Last activity:** 2026-06-04
 
 **Progress (current phase, by plan):**
 
 ```
-[███░░░░░░░] 33%
+[██████████] 100%
 ```
 
 **Progress (project, by phase):**
 
 ```
-[0/6 phases complete]
-░░░░░░░░░░░░░░░░░░░░ 0%
+[1/6 phases complete (Phase 1 ready for /gsd:transition)]
+███░░░░░░░░░░░░░░░░░ 17%
 ```
 
 ## Roadmap Snapshot
 
 | # | Phase | Status | Requirements |
 |---|-------|--------|--------------|
-| 1 | Typed Foundation + Look-Ahead Contract | In progress (1/3 plans complete) | HYP-02, CONFIG-01/02/03 |
+| 1 | Typed Foundation + Look-Ahead Contract | Complete (3/3 plans complete; all requirements validated) | HYP-02, CONFIG-01/02/03 |
 | 2 | Data Layer + Regime Labels | Not started | DATA-01/02/03 |
 | 3 | Strategy Contract + Backtest Engine | Not started | HYP-01, BT-01/02/03 |
 | 4 | Validation Discipline | Not started | VAL-01/02/03/04/05/06/07 |
@@ -73,9 +73,9 @@ Plan: 3 of 3
 
 (Populated by `/gsd:transition` as phases complete.)
 
-- **Phases completed:** 0 / 6
-- **Plans completed:** 1
-- **Requirements validated:** 1 / 28 (CONFIG-03)
+- **Phases completed:** 0 / 6 (Phase 1 complete; awaiting `/gsd:transition` to formally close it)
+- **Plans completed:** 3
+- **Requirements validated:** 4 / 28 (HYP-02, CONFIG-01, CONFIG-02, CONFIG-03)
 - **Kill-window days remaining:** TBD (clock starts when engine ships in Phase 6)
 
 ### Plan-level metrics
@@ -83,7 +83,8 @@ Plan: 3 of 3
 | Phase | Plan | Duration | Tasks | Files | Completed |
 |---|---|---|---|---|---|
 | 01 | 01 (toolchain-bootstrap) | ~15 min | 3 | 14 (13 created, 1 modified) | 2026-06-04 |
-| Phase 01 P03 | ~11min | 2 tasks | 14 files |
+| 01 | 02 (look-ahead-type-contract) | ~13 min | 2 | 21 (21 created, 2 modified) | 2026-06-05 |
+| 01 | 03 (config + import-linter) | ~11 min | 2 | 14 | 2026-06-05 |
 
 ## Accumulated Context
 
@@ -105,6 +106,10 @@ Plan: 3 of 3
 - [Phase 01]: (Plan 01-03) types-purity contract commented out pending Plan 01-02 landing berakah/types/__init__.py — Plan 02's SUMMARY should enable it. Literal contract name remains in importlinter.cfg (in a comment) for traceability test.
 - [Phase 01]: (Plan 01-03) Fixed .gitignore: changed data/ and artifacts/ (unanchored) to /data/ and /artifacts/ (repo-root-anchored) — unanchored form was matching berakah/data/ and berakah/artifacts/ source packages and silently hiding them from version control
 - [Phase 01]: (Plan 01-03) cfg.annualization_factor = sqrt(105_120) is the single source of truth for the crypto Sharpe constant — Pitfall 11 prevention. Phase 4 must import from BerakahConfig, not define a separate module-level constant.
+- [Phase 01]: (Plan 01-02) PEP 695 syntax chosen over legacy Generic[TypeVar]+TypeAlias forms — type Bars = pl.DataFrame, class BarSnapshot[T_Now: datetime], class RegimeLabel(StrEnum), class Side(StrEnum). Ruff UP040/UP042/UP046 enforce this; pyright handles both equivalently. PEP 695 is the canonical Python 3.12+ idiom.
+- [Phase 01]: (Plan 01-02) phantom-types library NOT used despite STACK.md flagging it as load-bearing for HYP-02. phantom-types' Phantom pattern requires multiple-inheritance with the wrapped type, incompatible with polars.DataFrame's Rust-backed __init__. ARCHITECTURE.md §2.1's exact sketch uses Generic[T_Now] + parse() classmethod + private _frame attribute — the architecturally cleaner pattern (and what was implemented). The runtime predicate fires in BarSnapshot.parse() via FutureBarLeakageError raise; the compile-time shield comes from pyright treating BarSnapshot[NowTs] and BarSnapshot[datetime] as distinct under PEP 695.
+- [Phase 01]: (Plan 01-02) I001 (isort) per-file-ignore added for tests/unit/types/*.py and tests/property/*.py because the LOCKED TYPE_CHECKING discipline (one  per line with  per line) is incompatible with isort's import-collapsing. Scope narrow: only RED-phase test files; production code in berakah/ has full I001 enforcement.
+- [Phase 01]: (Plan 01-02) HYP-02 realized at all 3 levels demanded by ROADMAP SC2: (1) pyright compile-time — mechanical subprocess proof in tests/property/test_barsnapshot_pyright_rejects.py runs 'uv run pyright --outputjson' on a generated fixture and asserts error "Type datetime is not assignable to declared type NowTs" fires; (2) runtime — FutureBarLeakageError raised by BarSnapshot.parse when close_ts > now_ts; (3) adversarial — hypothesis @given runs 200 examples (200 passing, 0 failing, 3 invalid) confirming no input produces a leaky snapshot.
 
 ### Decisions logged during execution
 
@@ -123,9 +128,8 @@ Plan: 3 of 3
 
 ### TODOs
 
-- Execute Plan 01-02 (Look-Ahead Type Contract via phantom-types + Generic[NowTs] in `berakah/types/`)
-- Execute Plan 01-03 (config.py + import-linter contracts; replace placeholder contract in importlinter.cfg)
-- Plans 01-02 and 01-03 can run in parallel (Wave 2) — they touch disjoint files
+- Phase 1 complete: invoke `/gsd:transition` to formally close Phase 1 and advance to Phase 2 (Data Layer + Regime Labels)
+- Plan 01-03 left the `types-purity` import-linter contract commented out pending Plan 01-02; that contract can now be enabled because `berakah/types/__init__.py` exists (deferred to a Plan 01-03 follow-up or absorbed into Phase 2 setup)
 
 ### Blockers
 
@@ -135,7 +139,7 @@ Plan: 3 of 3
 
 **Last session ended:** 2026-06-05 (Plan 01-01 completed)
 **Resume point:** Begin Wave 2 — execute Plan 01-02 and Plan 01-03 in parallel.
-**Stopped at:** Completed 01-03-PLAN.md (CONFIG-01 + CONFIG-02 realized; 2 task commits: 2d1cfa8, 3656928)
+**Stopped at:** Completed 01-02-PLAN.md (2 task commits: c356ae5, 743ff1a). HYP-02 realized at compile-time + runtime + adversarial.
 
 **Pre-flight check before starting Phase 1 Wave 2:**
 

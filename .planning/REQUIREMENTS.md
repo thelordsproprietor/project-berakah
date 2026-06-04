@@ -16,7 +16,7 @@ Ring 1 MVP scope. Each maps to exactly one roadmap phase (traceability table at 
 ### Hypothesis & Strategy
 
 - [ ] **HYP-01**: Operator authors a mean-reversion hypothesis as a vault Markdown note (`berakah_KB/hypotheses/HYP-{ID}-{slug}.md`) whose frontmatter links to an executable strategy module
-- [ ] **HYP-02**: Strategy modules expose a compile-time-verifiable contract such that look-ahead bias is *unrepresentable* in the type system — `Strategy.on_bar(snap: BarSnapshot[NowTs]) -> tuple[OrderIntent, ...]` where `BarSnapshot[NowTs]` is a phantom-typed view that can only expose bars whose `close_ts <= now_ts`
+- [x] **HYP-02**: Strategy modules expose a compile-time-verifiable contract such that look-ahead bias is *unrepresentable* in the type system — `Strategy.on_bar(snap: BarSnapshot[NowTs]) -> tuple[OrderIntent, ...]` where `BarSnapshot[NowTs]` is a phantom-typed view that can only expose bars whose `close_ts <= now_ts`
 - [ ] **HYP-03**: Hypothesis lifecycle is tracked via frontmatter status (`drafted | backtested | validated | invalidated`) and a per-hypothesis trial budget — required for the 6-month kill trigger accounting
 
 ### Backtest
@@ -120,7 +120,7 @@ Mapping from REQ-ID → phase. The roadmapper will finalize phase numbering; pha
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| HYP-02 | Phase 1 (Typed Foundation) | Pending |
+| HYP-02 | Phase 1 (Typed Foundation) | Complete |
 | CONFIG-01 | Phase 1 | Complete |
 | CONFIG-02 | Phase 1 | Complete |
 | CONFIG-03 | Phase 1 | Complete |

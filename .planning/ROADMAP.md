@@ -51,7 +51,7 @@ Reverse edges are forbidden and CI-enforced by `import-linter`. Phase boundaries
   5. The repo skeleton (`berakah/types/`, `berakah/config.py`, `tests/` mirroring 1:1, `pyproject.toml`, `uv.lock`, `importlinter.cfg`, `pyrightconfig.json`, `ruff.toml`, `pre-commit` config) exists and CI runs all checks on every push
 **Plans**: 3 plans in 2 waves (Plans 02 and 03 run parallel in Wave 2 after Plan 01)
   - [x] 01-01-PLAN.md - Toolchain + project skeleton + CI workflow (CONFIG-03)
-  - [ ] 01-02-PLAN.md - berakah/types/ + BarSnapshot[NowTs] phantom contract (HYP-02)
+  - [x] 01-02-PLAN.md - berakah/types/ + BarSnapshot[NowTs] phantom contract (HYP-02)
   - [x] 01-03-PLAN.md - BerakahConfig (frozen Pydantic Settings) + importlinter.cfg DAG contracts (CONFIG-01, CONFIG-02)
 **UI hint**: no
 
