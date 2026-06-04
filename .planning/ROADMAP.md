@@ -49,7 +49,10 @@ Reverse edges are forbidden and CI-enforced by `import-linter`. Phase boundaries
   3. `import-linter` CI step rejects any commit that introduces a forbidden edge (e.g., `berakah.strategy` importing `berakah.data`, `berakah.vault`, or `berakah.backtest`); a deliberately-broken test commit demonstrates the block
   4. A single `BerakahConfig` (Pydantic Settings) loads with `frozen=True, extra="forbid"`; an attempt to set an unknown env var raises at startup, and an attempt to mutate any config field at runtime raises
   5. The repo skeleton (`berakah/types/`, `berakah/config.py`, `tests/` mirroring 1:1, `pyproject.toml`, `uv.lock`, `importlinter.cfg`, `pyrightconfig.json`, `ruff.toml`, `pre-commit` config) exists and CI runs all checks on every push
-**Plans**: TBD
+**Plans**: 3 plans in 2 waves (Plans 02 and 03 run parallel in Wave 2 after Plan 01)
+  - [ ] 01-01-PLAN.md - Toolchain + project skeleton + CI workflow (CONFIG-03)
+  - [ ] 01-02-PLAN.md - berakah/types/ + BarSnapshot[NowTs] phantom contract (HYP-02)
+  - [ ] 01-03-PLAN.md - BerakahConfig (frozen Pydantic Settings) + importlinter.cfg DAG contracts (CONFIG-01, CONFIG-02)
 **UI hint**: no
 
 ### Phase 2: Data Layer + Regime Labels
@@ -157,7 +160,7 @@ No orphaned requirements. No requirement assigned to multiple phases.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Typed Foundation + Look-Ahead Contract | 0/0 | Not started | - |
+| 1. Typed Foundation + Look-Ahead Contract | 0/3 | Not started | - |
 | 2. Data Layer + Regime Labels | 0/0 | Not started | - |
 | 3. Strategy Contract + Backtest Engine | 0/0 | Not started | - |
 | 4. Validation Discipline | 0/0 | Not started | - |
