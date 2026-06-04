@@ -1,0 +1,36 @@
+{
+  "include": ["berakah", "tests"],
+  "exclude": [".venv", "**/__pycache__", "data", "artifacts", "berakah_KB"],
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.12",
+  "pythonPlatform": "Windows",
+  "typeCheckingMode": "strict",
+  "strict": ["berakah"],
+  "reportMissingImports": "error",
+  "reportMissingTypeStubs": "none",
+  "reportUnknownMemberType": "warning",
+  "reportUnknownArgumentType": "warning",
+  "reportUnknownVariableType": "warning",
+  "reportGeneralTypeIssues": "error",
+  "reportPrivateUsage": "error",
+  "executionEnvironments": [
+    {
+      "root": "berakah/strategy",
+      "reportPrivateUsage": "error",
+      "reportImportCycles": "error",
+      "reportUnknownMemberType": "error",
+      "reportUnknownArgumentType": "error",
+      "reportUnknownVariableType": "error"
+    },
+    {
+      "root": "tests",
+      "extraPaths": ["."],
+      "reportMissingTypeStubs": "none",
+      "reportUnknownMemberType": "none",
+      "reportUnknownArgumentType": "none",
+      "reportUnknownVariableType": "none",
+      "reportUnknownParameterType": "none"
+    }
+  ]
+}

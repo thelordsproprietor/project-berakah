@@ -1,0 +1,40 @@
+# Ruff configuration for Berakah Ring 1
+# Per STACK.md: rules E,F,W,I,N,UP,B,SIM,RUF,PL minimum
+# Per ARCHITECTURE.md §2.4: a ruff rule will forbid `pd.DataFrame` in
+# berakah/strategy/** parameter types — that rule lands in Plan 02 once
+# strategy types exist. This file is the placeholder.
+
+target-version = "py312"
+line-length = 100
+extend-exclude = [
+  ".venv",
+  "data",
+  "artifacts",
+  "berakah_KB",
+]
+
+[lint]
+select = [
+  "E",    # pycodestyle errors
+  "F",    # pyflakes
+  "W",    # pycodestyle warnings
+  "I",    # isort
+  "N",    # pep8-naming
+  "UP",   # pyupgrade
+  "B",    # bugbear
+  "SIM",  # simplify
+  "RUF",  # ruff-specific
+  "PL",   # pylint
+]
+ignore = [
+  "PLR0913",  # too-many-arguments — pure functions sometimes need many
+  "PLR2004",  # magic-value-comparison — fine in tests
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["PLR2004", "S101"]  # asserts and magic numbers ok in tests
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
