@@ -1,0 +1,62 @@
+# Pre-commit hooks for Berakah Ring 1
+# Per CONFIG-03: ruff + pyright + import-linter on every commit.
+# All hooks are local (run via uv) to use the project-pinned versions in uv.lock,
+# not whatever pre-commit pulls fresh.
+
+default_language_version:
+  python: python3.12
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: ruff-format
+        name: ruff format --check
+        entry: uv run ruff format --check
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: pyright
+        name: pyright (strict)
+        entry: uv run pyright
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: import-linter
+        name: import-linter (DAG contracts)
+        entry: uv run lint-imports --config importlinter.cfg
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # File-shape hooks: source code + configs only.
+      # Excludes:
+      #   - berakah_KB/  : the Obsidian vault is operator-authored Markdown;
+      #                    Obsidian's editor controls EOL/whitespace and these
+      #                    hooks fight that, modifying notes we must not touch
+      #   - .planning/   : GSD planning artifacts (PLAN.md, SUMMARY.md, STATE.md)
+      #                    are managed by GSD commands, not pre-commit
+      #   - uv.lock      : managed by uv; never hand-edit
+      - id: end-of-file-fixer
+        exclude: '^(berakah_KB/|\.planning/|uv\.lock$)'
+      - id: trailing-whitespace
+        exclude: '^(berakah_KB/|\.planning/|uv\.lock$)'
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=2048']  # 2MB cap; vault notes and source code stay small
